@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../authentication/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 const SignUp = () => {
 
-    const { createUser, googleSignIn } = useAuth();
+    const { user, createUser, googleSignIn } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -42,6 +42,13 @@ const SignUp = () => {
             }
         ).catch(error => console.log(error))
     }
+    useEffect(() => {
+        if (user) {
+            navigate(location?.state ? location.state : "/");
+        } else {
+            document.title = "Sign Up | Friendly BookWorm"
+        }
+    }, [])
     const [errors, seterrors] = useState(null)
     return (
 
