@@ -2,22 +2,21 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../authentication/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
     const { user, signIn, googleSignIn } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
-    const handlelogin = e => {
-        e.preventDefault();
-        const form = new FormData(e.currentTarget)
-        let email = form.get('email')
-        let pass = form.get('password')
-        signIn(email, pass).then(
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const handlelogin = data => {
+        signIn(data.email, data.password).then(
             result => {
                 navigate(location?.state ? location.state : "/");
             }
         ).catch(error =>
-            toast.error(<div className='p-4 py-5'>{error.message}</div>, {
+            toast.error(<div className='p-4 py-5'>{error.code==="auth/invalid-login-credentials"? "Email or Password is invalid":error.code}</div>, {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -45,19 +44,21 @@ const Login = () => {
     }, [])
     return (
         <div className="container mx-auto flex justify-center text-center">
-            <form onSubmit={handlelogin} className=" w-96 bg-blue-200">
+            <form onSubmit={handleSubmit(handlelogin)} className=" w-96 bg-blue-200">
                 <h1 className="text-4xl pb-6">Login</h1>
                 <div className="flex gap-2">
                     <label>
                         <span>Email</span>
                     </label>
-                    <input type="email" placeholder="email" name="email" required />
+                    <input type="email" {...register("email", { required: true })} className="input input-bordered" />
+                    {errors.email?.type === "required" && <p>E-mail field is required*</p>}
                 </div>
                 <div className="flex gap-2">
                     <label>
                         <span>Password</span>
                     </label>
-                    <input type="password" name="password" placeholder="password" required />
+                    <input type="password" {...register("password", { required: true })} className="input input-bordered" />
+                    {errors.password?.type === "required" && <p>Password field is required*</p>}
                 </div>
                 <div className="flex gap-2">
                     <label className="flex gap-2">
