@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { Link, useLocation, useRouteError } from "react-router-dom";
 
 const ErrorPage = ({message}) => {
     const error = useRouteError()
     const location = useLocation();
+    useEffect(()=>{
+        document.title = `Error ${error?.status} | Friendly BookWorm`
+    },[])
     return (
         <div className="flex flex-col items-center gap-4 w-screen overflow-x h-screen justify-center">
             <div className="text-[10vw] bg-blue-300 text-blue-700 py-4 px-8 rounded-lg w-max cursor-pointer" aos-data="fade-right">{error? error.status? error.status:"404":"404"}</div>

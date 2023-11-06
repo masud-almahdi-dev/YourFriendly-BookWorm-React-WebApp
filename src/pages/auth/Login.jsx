@@ -1,9 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../authentication/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
+import { useEffect } from "react";
 
 const Login = () => {
-    const { signIn, googleSignIn } = useAuth();
+    const { user, signIn, googleSignIn } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
     const handlelogin = e => {
@@ -35,8 +36,14 @@ const Login = () => {
             }
         ).catch(error => console.log(error))
     }
-
-    return ( 
+    useEffect(() => {
+        if (user) {
+            navigate(location?.state ? location.state : "/");
+        } else {
+            document.title = "Login | Friendly BookWorm"
+        }
+    }, [])
+    return (
         <div className="container mx-auto flex justify-center text-center">
             <form onSubmit={handlelogin} className=" w-96 bg-blue-200">
                 <h1 className="text-4xl pb-6">Login</h1>
@@ -65,7 +72,7 @@ const Login = () => {
             </form>
             <ToastContainer></ToastContainer>
         </div>
-     );
+    );
 }
- 
+
 export default Login;
