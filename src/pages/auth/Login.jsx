@@ -16,7 +16,7 @@ const Login = () => {
                 navigate(location?.state ? location.state : "/");
             }
         ).catch(error =>
-            toast.error(<div className='p-4 py-5'>{error.code==="auth/invalid-login-credentials"? "Email or Password is invalid":error.code}</div>, {
+            toast.error(<div className='p-4 py-5'>{error.code === "auth/invalid-login-credentials" ? "Email or Password is invalid" : error.code}</div>, {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -43,32 +43,31 @@ const Login = () => {
         }
     }, [])
     return (
-        <div className="container mx-auto flex justify-center text-center">
-            <form onSubmit={handleSubmit(handlelogin)} className=" w-96 bg-blue-200">
+        <div className="flex justify-end bg-blue-300 h-screen items-center text-center">
+            <form onSubmit={handleSubmit(handlelogin)} className=" w-[45%] px-40 bg-white h-full justify-center p-6 flex flex-col gap-8">
                 <h1 className="text-4xl pb-6">Login</h1>
-                <div className="flex gap-2">
-                    <label>
+                <div className="flex flex-col">
+                    <label className="flex justify-between items-center mb-2">
                         <span>Email</span>
+                        <input type="email" {...register("email", { required: true })} className="w-[70%] p-2 rounded-md border border-black/20 hover:border-black/40" />
                     </label>
-                    <input type="email" {...register("email", { required: true })} className="input input-bordered" />
-                    {errors.email?.type === "required" && <p>E-mail field is required*</p>}
+                    {errors.email?.type === "required" && <p className=" bg-red-200 text-red-800">E-mail field is required*</p>}
                 </div>
-                <div className="flex gap-2">
-                    <label>
+                <div className="flex flex-col">
+                    <label className="flex justify-between items-center mb-2">
                         <span>Password</span>
+                        <input type="password" {...register("password", { required: true })} className="w-[70%] p-2 rounded-md border border-black/20 hover:border-black/40" />
                     </label>
-                    <input type="password" {...register("password", { required: true })} className="input input-bordered" />
-                    {errors.password?.type === "required" && <p>Password field is required*</p>}
+                    {errors.password?.type === "required" && <p className=" bg-red-200 text-red-800">Password field is required*</p>}
                 </div>
-                <div className="flex gap-2">
-                    <label className="flex gap-2">
+                <button className="p-4 border border-black hover:border-red-500 -my-4 hover:grayscale hover:brightness-75 hover:invert bg-white transition-all duration-150">Sign In</button>
+                <button onClick={handlegooglelogin} className="flex items-center w-full p-4 border hover:border-red-500 hover:grayscale hover:brightness-75 hover:invert bg-white transition-all duration-150 border-black rounded-md"><img src="/google.png" alt="google" className="w-20" /><span className="w-full text-center">Log In With Google</span>
+                </button>
+                <div className="flex flex-col">
+                    <label className="flex gap-2 items-center">
                         <span>Dont have an account?</span>
-                        <Link to="/signup" state={location?.state ? location.state : "/"} >Sign Up</Link>
+                        <Link to="/signup" className=" hover:bg-blue-500 hover:text-white p-2 rounded-md transition-colors duration-150 text-blue-500" state={location?.state ? location.state : "/"} >Sign Up</Link>
                     </label>
-                </div>
-                <button>Login</button>
-                <div>
-                    <button onClick={handlegooglelogin}>G</button>
                 </div>
             </form>
             <ToastContainer></ToastContainer>
