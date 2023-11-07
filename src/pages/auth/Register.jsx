@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../authentication/useAuth";
+import {useAuth} from "../../authentication/Authentication";
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from 'react-toastify';
 const SignUp = () => {
@@ -54,7 +54,7 @@ const SignUp = () => {
     }, [])
     return (
 
-        <div className="flex justify-between flex-col lg:flex-row lg:bg-yellow-300 lg:h-screen items-center text-center">
+        <div className="flex justify-between flex-col lg:flex-row bg-white lg:bg-yellow-300 lg:h-screen items-center text-center">
             <div className="flex w-full lg:w-1/2 justify-center items-center">
                 <img src="/login.png" className="w-[20vw] lg:w-[40vw]" alt="" />
             </div>

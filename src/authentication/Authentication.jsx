@@ -1,9 +1,23 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, signInWithPopup } from "firebase/auth";
-import app from "./firebase.config";
+import { initializeApp } from "firebase/app";
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_APIKEY,
+  authDomain: import.meta.env.VITE_AUTHDOMAIN,
+  projectId: import.meta.env.VITE_PROJECTID,
+  storageBucket: import.meta.env.VITE_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_APPID
+};
+const app = initializeApp(firebaseConfig);
 export const AuthContext = createContext(null)
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider()
+
+export const useAuth = () => {
+    const auth = useContext(AuthContext);
+    return auth;
+}
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
