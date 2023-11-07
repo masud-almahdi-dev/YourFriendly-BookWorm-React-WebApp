@@ -76,14 +76,24 @@ const Navbar = ({ children }) => {
                         {location.pathname === "/" && <h1 className={`md:text-6xl sm:text-5xl text-4xl text-center ${darkmode && "invert"}`}>YOURFRIENDLY<br />BOOKWORM</h1>}
                         <div className="gap-4 navigation-links sm:mt-4 md:mt-8 flex-wrap md:flex-nowrap justify-center sm:flex absolute hidden">{links}</div>
                     </div>
-                    <div className="dropdown dropdown-end absolute top-0 lg:mr-20 mt-12 right-[4px] z-[3]">
+                    <div className="dropdown dropdown-end navigation-dropdown absolute top-0 lg:mr-20 mt-12 right-[4px] z-[3]">
                         <label tabIndex={0} className="cursor-pointer">
                             <img src="/menu.png" alt="" className={`h-10 pr-6 py-2 lg:h-16 lg:p-4 ${darkmode && "invert"}`} />
                         </label>
                         <ul tabIndex={0} className="dropdown-content z-[30] menu p-2 shadow bg-base-100 rounded-box w-max">
-                            {links.map((elem, i) => <li key={i} className="w-full">{elem}</li>)}
+                            {links.map((elem, i) => <li key={i} className="w-full hover:bg-[#ddcccc] rounded-lg">{elem}</li>)}
                         </ul>
                     </div>
+                    {user && 
+                        <div className="flex bg-white rounded-lg font-bruno-sc absolute p-2 z-[4] gap-3">
+                            {user.photoURL && <img src={user.photoURL} alt="" className="rounded-lg" />}
+                            <div>
+                            <button className="bg-[#7B4E4E] text-white p-2 rounded-md">Sign Out</button>
+                            <h2>{user.displayName}</h2>
+                            <h2>{user.email}</h2>
+                            </div>
+                        </div>
+                    }
 
                     <label className="swap swap-rotate absolute top-16 lg:top-0 lg:mr-36 mr-6 mt-12 w-10 h-10 lg:w-16 lg:h-16 right-[4px] z-[2]">
                         <input id="darkmodetoggleswitch" type="checkbox" />

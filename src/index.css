@@ -53,4 +53,7 @@
     .navigation-links a:not(.active) {
         @apply bg-[#d9d9d9] text-black hover:brightness-110 hover:grayscale transition-all px-4 py-2 w-max capitalize rounded-md text-base !important;
     }
+    .navigation-dropdown a.active{
+        @apply bg-[#7B4E4E] !important;
+    }
 }
