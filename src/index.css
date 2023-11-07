@@ -1,3 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Bruno+Ace+SC&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .font-bree {
+        font-family: 'Bree Serif', serif;
+    }
+
+    .font-bruno-sc {
+        font-family: 'Bruno Ace SC', sans-serif;
+    }
+
+    body {
+        @apply font-bree;
+    }
+
+    .font-outline-1 {
+        text-shadow:
+        -1px -1px 0 #DAC295,
+         0   -1px 0 #DAC295,
+         1px -1px 0 #DAC295,
+         1px  0   0 #DAC295,
+         1px  1px 0 #DAC295,
+         0    1px 0 #DAC295,
+        -1px  1px 0 #DAC295,
+        -1px  0   0 #DAC295;
+    }
+
+    .font-outline-2 {
+        text-shadow:
+        -2px -2px 0 #DAC295,
+         0   -2px 0 #DAC295,
+         2px -2px 0 #DAC295,
+         2px  0   0 #DAC295,
+         2px  2px 0 #DAC295,
+         0    2px 0 #DAC295,
+        -2px  2px 0 #DAC295,
+        -2px  0   0 #DAC295;
+    }
+
+    .font-outline-4 {
+        -webkit-text-stroke: 4px #DAC295;
+    }
+}
+
+@layer utilities {
+    .navigation-links a.active {
+        @apply bg-[#7B4E4E] text-white hover:brightness-110 hover:grayscale transition-all px-4 py-2 w-max capitalize rounded-md !important;
+    }
+
+    .navigation-links a:not(.active) {
+        @apply bg-[#d9d9d9] text-black hover:brightness-110 hover:grayscale transition-all px-4 py-2 w-max capitalize rounded-md !important;
+    }
+}

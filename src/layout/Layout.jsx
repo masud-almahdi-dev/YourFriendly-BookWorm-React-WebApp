@@ -12,8 +12,7 @@ const Layout = () => {
     }, [])
     return ( 
         <div>
-            <Navbar></Navbar>
-            <Outlet></Outlet>
+            <Navbar><Outlet/></Navbar>
         </div>
      );
 }
