@@ -43,8 +43,12 @@ const Login = () => {
         }
     }, [])
     return (
-        <div className="flex justify-end bg-blue-300 h-screen items-center text-center">
-            <form onSubmit={handleSubmit(handlelogin)} className=" w-[45%] px-40 bg-white h-full justify-center p-6 flex flex-col gap-8">
+
+        <div className="flex justify-between flex-col lg:flex-row lg:bg-yellow-300 lg:h-screen items-center text-center">
+            <div className="flex w-full lg:w-1/2 pt-6 lg:pt-0 justify-center items-center">
+                <img src="/login.png" className="w-[20vw] lg:w-[40vw]" alt="" />
+            </div>
+            <form onSubmit={handleSubmit(handlelogin)}  className="w-full lg:w-[45%] md:px-40 lg:px-10 xl:px-32 bg-white h-full justify-center p-6 flex flex-col gap-8">
                 <h1 className="text-4xl pb-6">Login</h1>
                 <div className="flex flex-col">
                     <label className="flex justify-between items-center mb-2">
@@ -64,9 +68,9 @@ const Login = () => {
                 <button onClick={handlegooglelogin} className="flex items-center w-full p-4 border hover:border-red-500 hover:grayscale hover:brightness-75 hover:invert bg-white transition-all duration-150 border-black rounded-md"><img src="/google.png" alt="google" className="w-20" /><span className="w-full text-center">Log In With Google</span>
                 </button>
                 <div className="flex flex-col">
-                    <label className="flex gap-2 items-center">
+                    <label className="flex gap-2 items-center justify-between md:justify-normal">
                         <span>Dont have an account?</span>
-                        <Link to="/signup" className=" hover:bg-blue-500 hover:text-white p-2 rounded-md transition-colors duration-150 text-blue-500" state={location?.state ? location.state : "/"} >Sign Up</Link>
+                        <Link to="/signup" className=" hover:bg-blue-500 md:bg-white bg-blue-200 hover:text-white p-2 rounded-md transition-colors duration-150 text-blue-500" state={location?.state ? location.state : "/"} >Sign Up</Link>
                     </label>
                 </div>
             </form>

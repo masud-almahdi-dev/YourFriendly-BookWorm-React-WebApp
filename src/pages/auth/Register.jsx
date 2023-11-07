@@ -54,8 +54,11 @@ const SignUp = () => {
     }, [])
     return (
 
-        <div className="flex justify-end bg-blue-300 h-screen items-center text-center">
-            <form onSubmit={handleSubmit(handleSignUp)} className=" w-[45%] px-40 bg-white h-full justify-center p-6 flex flex-col gap-8">
+        <div className="flex justify-between flex-col lg:flex-row lg:bg-yellow-300 lg:h-screen items-center text-center">
+            <div className="flex w-full lg:w-1/2 justify-center items-center">
+                <img src="/login.png" className="w-[20vw] lg:w-[40vw]" alt="" />
+            </div>
+            <form onSubmit={handleSubmit(handleSignUp)} className="w-full lg:w-[45%] md:px-40 lg:px-10 xl:px-32 bg-white h-full justify-center p-6 flex flex-col gap-8">
                 <h1 className="text-4xl pb-6">SignUp</h1>
                 <div className="flex flex-col">
                     <label className="flex justify-between items-center mb-2">
