@@ -51,8 +51,8 @@ const Category = () => {
                                                 emptySymbol={<img src="/star1.png" className="w-10 grayscale opacity-60" />}
                                                 fullSymbol={<img src="/star1.png" className="w-10" />}
                                             />
-                                            <h3 className={`text-xs backdrop-blur-lg px-4 py-2 pb-0 ${darkmode ? "text-white" : "text-black"}`}>{item.author || "AVB"}</h3>
-                                            <h3 className={`text-lg lg:text-4xl backdrop-blur-lg px-4 py-2 ${darkmode ? "text-white" : "text-[#7B4E4E]"} `}>{item.title}</h3>
+                                            <h3 className={`text-xs backdrop-blur-lg px-4 py-2 pb-0 ${darkmode ? "text-white" : "text-black"}`}>{item.author || "No Author"}</h3>
+                                            <h3 className={`text-lg lg:text-4xl backdrop-blur-lg px-4 py-2 ${darkmode ? "text-white" : "text-[#7B4E4E]"} `}>{item.name}</h3>
                                         </div>
                                     </div>
                                 );

@@ -85,10 +85,10 @@ const Navbar = ({ children }) => {
                                 </ul>
                             </div>
                             {user &&
-                                <div className={`flex absolute mt-24 lg:mt-28 ${darkmode ? "text-white" : ""} flex-col lg:flex-row rounded-xl font-bruno-sc p-2 ml-6 lg:pb-4 lg:pr-8 z-[4] gap-4`}>
+                                <div className={`flex absolute mt-24 md:mt-28 ${darkmode ? "text-white" : ""} flex-col md:flex-row rounded-xl font-bruno-sc p-2 ml-6 md:pb-4 md:pr-8 z-[4] gap-4`}>
                                     {user.photoURL && <img src={user.photoURL} alt="" className="rounded-xl w-16 h-16" />}
-                                    <div className="flex lg:flex-col flex-col-reverse text-center lg:text-left">
-                                        <button className="bg-[#430B0B] text-white p-2 w-max rounded-md text-xs lg:mb-2" onClick={logOut}>Sign Out</button>
+                                    <div className="flex md:flex-col flex-col-reverse text-center md:text-left">
+                                        <button className="bg-[#430B0B] text-white p-2 w-max rounded-md text-xs md:mb-2" onClick={logOut}>Sign Out</button>
                                         <h2 className="text-sm md:flex hidden bg-white/75 text-black px-2 rounded-md">{user.displayName}</h2>
                                         <h2 className="text-sm md:flex hidden bg-white/75 text-black px-2 rounded-md">{[""].map(() => {
                                             return user.email.split('@')[0].slice(0, 4) + "......@" + user.email.split('@')[1]
@@ -100,11 +100,11 @@ const Navbar = ({ children }) => {
                         </div>
                         <div className=" w-[60vw] md:w-max">
                             <div className=" mt-12 mb-6 flex justify-center items-center">
-                                <div className="bg-red-500 absolute pointer-events-none rounded-md w-[60vw] lg:w-[466px] translate-y-2 md:min-w-[522px] max-w-[90vw] px-4 py-2 scale-95 text-red-500 z-[2]"> a</div>
+                                {/* <div className="bg-red-500 absolute pointer-events-none rounded-md w-[60vw] lg:w-[466px] translate-y-2 md:min-w-[522px] max-w-[90vw] px-4 py-2 scale-95 text-red-500 z-[2]"> a</div>
                                 <div className="flex z-[3]">
                                     <input type="text" placeholder="SEARCH..." className={` ${darkmode ? "bg-[#d9d9d9]" : "bg-white"} rounded-md w-[60vw] lg:w-[466px] md:min-w-[522px] max-w-[90vw] px-4 py-2 pr-10  placeholder:text-black`} />
                                     <img src="/arrow.svg" className="-translate-x-4 -ml-4 hover:rotate-[135deg] cursor-pointer transition-all duration-150" alt="" />
-                                </div>
+                                </div> */}
                             </div>
                             {location.pathname === "/" && <h1 className={`md:text-6xl sm:text-5xl text-4xl text-center ${darkmode && "invert"}`}>YOUR FRIENDLY<br />BOOKWORM</h1>}
                             <div className="gap-4 navigation-links sm:mt-4 md:mt-8 flex-wrap md:flex-nowrap justify-center sm:flex hidden">{links}</div>
