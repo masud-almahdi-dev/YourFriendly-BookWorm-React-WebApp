@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 export const DarkmodeContext = createContext()
 
-const useDarkMode = () => {
+export const useDarkMode = () => {
     const darm = useContext(DarkmodeContext);
     return darm;
 }
@@ -10,9 +10,9 @@ export const DarkmodeProvider = ({children}) => {
     const darkmodeinfo = { darkmode, setDarkMode }
     useEffect(()=>{
         if(darkmode){
-            document.body.style.backgroundColor = "#252525"
+            document.body.style.background = "#252525"
         }else{
-            document.body.style.backgroundColor = "#d9d9d9"
+            document.body.style.background = "#d9d9d9"
         }
     },[darkmode])
     return (

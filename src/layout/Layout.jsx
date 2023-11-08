@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 const Layout = () => {
     useEffect(() => {
         document.body.style.minHeight = "100dvh"
+        document.body.style.maxWidth = "100dvw"
+        document.body.style.overflowX = "hidden"
         Aos.init(
             { duration: 1200 }
         );

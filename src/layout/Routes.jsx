@@ -6,6 +6,11 @@ import Register from "../pages/auth/Register";
 import Cart from "../pages/cart/Cart";
 import PrivateRoute from "../pages/auth/PrivateRoute";
 import ErrorPage from "../pages/error/ErrorPage";
+import Category from "../pages/category/Category";
+import BookDetails from "../pages/book/BookDetails";
+import AllBooks from "../pages/book/AllBooks";
+import UpdateBook from "../pages/book/UpdateBook";
+import AddBook from "../pages/book/AddBook";
 
 const Routes = createBrowserRouter([
     {
@@ -18,6 +23,10 @@ const Routes = createBrowserRouter([
                 element: <Home />,
             },
             {
+                path: "/error",
+                element: <ErrorPage />,
+            },
+            {
                 path: "/login",
                 element: <Login />,
             },
@@ -28,6 +37,29 @@ const Routes = createBrowserRouter([
             {
                 path: "/cart",
                 element: <PrivateRoute><Cart /></PrivateRoute>,
+            },
+            {
+                path: "/books",
+                element: <PrivateRoute><AllBooks /></PrivateRoute>,
+            },
+            {
+                path: "/add",
+                element: <PrivateRoute><AddBook /></PrivateRoute>,
+            },
+            {
+                path: "/category/:id",
+                element: <PrivateRoute><Category /></PrivateRoute>,
+                loader: ({ params }) => params.id 
+            },
+            {
+                path: "/book/:id",
+                element: <PrivateRoute><BookDetails/></PrivateRoute>,
+                loader: ({ params }) => params.id 
+            },
+            {
+                path: "/update/:id",
+                element: <PrivateRoute><UpdateBook/></PrivateRoute>,
+                loader: ({ params }) => params.id 
             },
         ]
     },
