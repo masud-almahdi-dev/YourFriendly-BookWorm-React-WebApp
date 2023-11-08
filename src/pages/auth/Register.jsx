@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../authentication/Authentication";
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from 'react-toastify';
+import axios from "axios";
 const SignUp = () => {
 
     const { user, createUser, googleSignIn } = useAuth();
@@ -18,7 +19,7 @@ const SignUp = () => {
 
         createUser(data.email, data.password).then(res => {
             
-            // UPDATE DATABASE
+            axios.post(`${import.meta.env.VITE_SERVER_URI}/usercreate`,data).then(data=>console.log(data.data)).catch(e=>console.log(e))
             // if (location?.state) {
             //     navigate(location.state);
             // } else {

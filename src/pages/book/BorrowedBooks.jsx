@@ -3,26 +3,52 @@ import { useEffect, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import useDarkMode from "../../darkmode/darkMode";
 import Rating from "react-rating";
+import { useAuth } from "../../authentication/Authentication";
 
-const AllBooks = () => {
+const BorrowedBooks = () => {
+    const { user } = useAuth()
     const loaded = useLoaderData()
     const [failed, setFailed] = useState(true);
+    const [bookids, setbookids] = useState([]);
     const [books, setbooks] = useState([]);
+    const [finalbooks, setFinalBooks] = useState([]);
     const [isfilter, setfilter] = useState(false);
     const { darkmode, setDarkMode } = useDarkMode();
     const navigate = useNavigate()
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_SERVER_URI}/books`).then(data => {
-            if (data?.data?._id === loaded) {
-                setFailed(false);
-                document.title = "All Books | Friendly BookWorm"
-                setbooks(data.data);
-            } else {
-                const st = { errormessage: "Loading books failed" }
-                navigate("/error", { state: st });
-            }
-        }).catch((e) => { console.log(e); setFailed(true); })
+        if (user) {
+            const data = { user: user.email }
+            axios.get(`${import.meta.env.VITE_SERVER_URI}/user`, data).then(data => {
+                if (data?.data?._id === loaded) {
+                    document.title = "Borrowed Books | Friendly BookWorm"
+                    setbookids(data.data?.books);
+                } else {
+                    const st = { errormessage: "Loading books failed" }
+                    navigate("/error", { state: st });
+                }
+            }).catch((e) => { console.log(e); setFailed(true); })
+            axios.get(`${import.meta.env.VITE_SERVER_URI}/books`).then(data => {
+                if (data?.data?._id === loaded) {
+                    setFailed(false);
+                    document.title = "All Books | Friendly BookWorm"
+                    setbooks(data.data);
+                } else {
+                    const st = { errormessage: "Loading books failed" }
+                    navigate("/error", { state: st });
+                }
+            }).catch((e) => { console.log(e); setFailed(true); })
+        }
     }, [])
+    useEffect(()=>{
+        if(books!==null && books!==undefined){
+            setFinalBooks(books.filter((item)=>{
+                let bole = false;
+                for(let i of bookids){
+                    if(i== item._id){return true}
+                }
+            }))
+        }
+    },[books])
     const handledetails = (id) => {
         navigate(`/book/${id}`);
     }
@@ -32,11 +58,11 @@ const AllBooks = () => {
     return (
         <div className="">
             <div className="container mx-auto mt-36 text-white px-6">
-                <button onClick={()=>{setfilter(!isfilter)}} className="btn btn-warning">Filter by Available</button>
-                {!failed && books.filter(item=>isfilter? item.quantity>parseInt(0):true).length > 0 ?
+                <button onClick={() => { setfilter(!isfilter) }} className="btn btn-warning">Filter by Available</button>
+                {!failed && books.filter(item => isfilter ? item.quantity > parseInt(0) : true).length > 0 ?
                     <div className="grid grid-cols-1 lg:grid-cols-2 p-4 gap-4">
-                        
-                        {books.filter(item=>isfilter? item.quantity>parseInt(0):true).map(
+
+                        {finalbooks.filter(item => isfilter ? item.quantity > parseInt(0) : true).map(
                             (item, index) => {
                                 return (
                                     <div key={index} className="flex justify-start items-end w-full gap-2">
@@ -65,5 +91,5 @@ const AllBooks = () => {
         </div>
     );
 }
- 
-export default AllBooks;
+
+export default BorrowedBooks;

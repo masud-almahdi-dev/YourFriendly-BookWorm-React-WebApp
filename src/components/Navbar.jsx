@@ -1,10 +1,12 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../authentication/Authentication";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import {useDarkMode} from "../darkmode/darkMode";
+import axios from "axios";
 
 const Navbar = ({ children }) => {
     const { user, logOut } = useAuth();
+    const [userdata,setuserdata] = useState(undefined);
     const location = useLocation();
     const { darkmode, setDarkMode } = useDarkMode();
     const links = [
@@ -25,6 +27,10 @@ const Navbar = ({ children }) => {
         }
     }
     useEffect(() => {
+        if(user!==null && user!==undefined){
+            const data = {email: user.email}
+            axios.get(`${import.meta.env.VITE_SERVER_URI}/user`, data).then(data => {setuserdata(data.data);console.log(data.data)}).catch(e=>console.log(e))
+        }
         const darkmodetoggleswitch = document.getElementById("darkmodetoggleswitch")
         if (darkmode === true) {
             if (darkmodetoggleswitch) {
@@ -89,7 +95,7 @@ const Navbar = ({ children }) => {
                                     {user.photoURL && <img src={user.photoURL} alt="" className="rounded-xl w-16 h-16" />}
                                     <div className="flex md:flex-col flex-col-reverse text-center md:text-left">
                                         <button className="bg-[#430B0B] text-white p-2 w-max rounded-md text-xs md:mb-2" onClick={logOut}>Sign Out</button>
-                                        <h2 className="text-sm md:flex hidden bg-white/75 text-black px-2 rounded-md">{user.displayName}</h2>
+                                        <h2 className="text-sm md:flex hidden bg-white/75 text-black px-2 rounded-md">{userdata===undefined? user.displayName:userdata.Name}</h2>
                                         <h2 className="text-sm md:flex hidden bg-white/75 text-black px-2 rounded-md">{[""].map(() => {
                                             return user.email.split('@')[0].slice(0, 4) + "......@" + user.email.split('@')[1]
                                         })}

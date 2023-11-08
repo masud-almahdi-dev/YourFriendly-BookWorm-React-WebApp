@@ -21,13 +21,7 @@ const UpdateBook = () => {
     const handleDelete = async (e) => {
         e.preventDefault();
         axios.delete(`${import.meta.env.VITE_SERVER_URI}/delete/${book._id}`).then(res => {
-            for(let i=0; i<categories.length;i++){
-                if(categories[i].title=== book.category )
-                {
-                    return navigate(`/category/${categories[i]._id}`)
-                }
-            }
-            return navigate(`/`)
+            history.back()
         }).catch((e) => {
             console.log(e); //setFailed(true);
             const st = { errormessage: "Book id: " + loaded + ", deleting unsuccessful" }
