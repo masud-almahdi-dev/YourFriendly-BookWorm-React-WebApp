@@ -31,7 +31,6 @@ const Navbar = ({ children }) => {
     useEffect(()=>{
         if(user!==null && user!==undefined){
             const data = {email: user.email}
-            axiosSecure.get(`/user`).then(data => {setuserdata(data.data);}).catch(e=>console.log(e))
         }
     },[])
     useEffect(()=>{

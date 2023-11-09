@@ -21,8 +21,7 @@ const Allbookitem = ({ arr }) => {
     }
 
     return (<>
-        {user&&userrole===""? <h1 className="mx-auto text-center p-4 w-full rounded-lg my-4 bg-white text-black text-xl">Loading</h1>
-        :
+        {
         arr.map((item, index) => {
             return <div key={index} className={`flex justify-start items-end w-full gap-2 overflow-hidden text-white ${darkmode? "bg-white/10":"bg-slate-100"} rounded-lg`}>
                 <img src={item.image ? item.image : "https://i.ibb.co/HXPcQ1d/defaultbook.jpg"} className="h-[40vh] rounded-lg overflow-hidden aspect-[9/12] object-cover contrast-125 saturate-150 brightness-110" alt="" />

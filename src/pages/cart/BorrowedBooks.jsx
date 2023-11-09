@@ -21,13 +21,11 @@ const BorrowedBooks = () => {
     useEffect(() => {
         const data = { }
         document.title = "Borrowed Books | Friendly BookWorm"
-        axiosSecure.get("/user").then(data => {
-            if (data?.data?.books) {
-                setbookids(data.data?.books);
-            } else { navigate("/error", { state: { errormessage: "Loading Borrowed Books failed" } }); }
-        }).catch((e) => { console.log(e); setFailed(true); })
+        axiosSecure.get("/user").then(data => setbookids(data.data?.books)).catch((e) => { console.log(e); setFailed(true); })
         axiosSecure.get("/books").then(data => { setbooks(data.data); }).catch((e) => { console.log(e); navigate("/error", { state: { errormessage: "Loading books failed" } }); })
+        
     }, [axiosSecure])
+
     useEffect(()=>{
         if(books!==null && books!==undefined){
             setFinalBooks(books.filter((item)=>{ return bookids.includes(item._id) }))
