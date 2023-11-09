@@ -4,16 +4,18 @@ import useDarkMode from "../../darkmode/darkMode";
 import axios from "axios";
 import { useAuth } from "../../authentication/Authentication";
 import { useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../authentication/useaxiossecure";
 
 const Home = () => {
     const { darkmode, setDarkMode } = useDarkMode();
     const {user} = useAuth();
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
+    const axiosSecure = useAxiosSecure()
     const [failed, setFailed] = useState(true);
     useEffect(() => {
         document.title = "Home | Friendly BookWorm"
-        axios.get(`${import.meta.env.VITE_SERVER_URI}/categories`).then(data => { setFailed(false); setCategories(data.data); }).catch(() => { setFailed(true); })
+        axiosSecure.get(`/categories`).then(data => { setFailed(false); setCategories(data.data); }).catch(() => { setFailed(true); })
     }, [])
     const handleViewCategory = (id) => {
         navigate(`/category/${id}`);

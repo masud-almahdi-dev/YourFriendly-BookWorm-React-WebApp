@@ -2,16 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import useDarkMode from "../../darkmode/darkMode";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../authentication/useaxiossecure";
 
 const ReadPage = () => {
     const loaded = useLoaderData()
     const [failed, setFailed] = useState(true);
     const [inputvisible, setinputvis] = useState(false);
     const [book, setBook] = useState({});
+    const axiosSecure = useAxiosSecure()
     const { darkmode, setDarkMode } = useDarkMode();
     const navigate = useNavigate()
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_SERVER_URI}/book/${loaded}`).then(data => {
+        axiosSecure.get(`/book/${loaded}`).then(data => {
             if (data?.data?._id === loaded) {
                 setFailed(false);
                 document.title = data.data.title + " | Friendly BookWorm"
@@ -29,7 +31,7 @@ const ReadPage = () => {
     }, [])
     const handleupdatecontent = ()=>{
         const data =  { "content": document.getElementById("bookcontent").value }
-        axios.patch(`${import.meta.env.VITE_SERVER_URI}/content/${loaded}`,data).then(res=>console.log(data.data)).catch(e=>console.log(e))
+        axiosSecure.patch(`/content/${loaded}`,data).then(res=>console.log(data.data)).catch(e=>console.log(e))
     }
     return (
         <div className="">

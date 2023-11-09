@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import Rating from "react-rating";
 import { useAuth } from "../../authentication/Authentication";
+import useAxiosSecure from "../../authentication/useaxiossecure";
 
 
 const AddBook = () => {
@@ -15,8 +16,10 @@ const AddBook = () => {
     const [rating, setRating] = useState(2);
     const [image, setImage] = useState(null);
     const { darkmode, setDarkMode } = useDarkMode();
+    const axiosSecure = useAxiosSecure()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
+    const toastinfo = { position: "bottom-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: false, progress: undefined, theme: "colored" }
     function handleImageChange(event) {
         setImage(event.target.value)
     }
@@ -25,7 +28,7 @@ const AddBook = () => {
     }
     
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_SERVER_URI}/categories`).then(data => { setFailed(false); setCategories(data.data); }).catch(() => { setFailed(true); })
+        axiosSecure.get(`/categories`).then(data => { setFailed(false); setCategories(data.data); }).catch(() => { setFailed(true); })
         document.title = "Add Book | Friendly BookWorm"
         const imageinput = document.getElementById('image-upload');
         imageinput.addEventListener("change", handleImageChange);
@@ -33,32 +36,14 @@ const AddBook = () => {
     const handleadd = data => {
         data.rating = rating.toString()
         data.category = categories[parseInt(document.getElementById("currcategory1").value)].title
-        axios.post(`${import.meta.env.VITE_SERVER_URI}/add`, data).then(data => {
+        axiosSecure.post(`/add`, data).then(data => {
             if(data.data.acknowledged){
 
-                toast.success(<div className='p-4 py-5'>Book Inserted Successfully<br /> <button onClick={handlegoback} className="px-2 py-1 bg-green-800 text-white rounded-md">Go Back</button></div>, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "colored",
-                })
+                toast.success(<div className='p-4 py-5'>Book Inserted Successfully<br /> <button onClick={handlegoback} className="px-2 py-1 bg-green-800 text-white rounded-md">Go Back</button></div>,toastinfo)
             }
             
         }).catch((e) => {
-            toast.error(<div className='p-4 py-5'>{e.message}</div>, {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-            })
+            toast.error(<div className='p-4 py-5'>{e.message}</div>, toastinfo)
         })
     }
     const handleRatingChange = (value) => {

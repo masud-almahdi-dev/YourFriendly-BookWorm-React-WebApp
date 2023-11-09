@@ -5,22 +5,25 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import Rating from "react-rating";
+import useAxiosSecure from "../../authentication/useaxiossecure";
 const UpdateBook = () => {
     const [failed, setFailed] = useState({categories:true,book:true});
     const [categories, setCategories] = useState([]);
     const [rating, setRating] = useState(2);
     const loaded = useLoaderData();
     const [book, setBook] = useState({});
+    const axiosSecure = useAxiosSecure()
     const [image, setImage] = useState(null);
     const { darkmode, setDarkMode } = useDarkMode();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
+    const toastinfo = { position: "bottom-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: false, progress: undefined, theme: "colored" }
     function handleImageChange(event) {
         setImage(event.target.value)
     }
     const handleDelete = async (e) => {
         e.preventDefault();
-        axios.delete(`${import.meta.env.VITE_SERVER_URI}/delete/${book._id}`).then(res => {
+        axiosSecure.delete(`/delete/${book._id}`).then(res => {
             history.back()
         }).catch((e) => {
             console.log(e); //setFailed(true);
@@ -29,7 +32,7 @@ const UpdateBook = () => {
         })
     }
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_SERVER_URI}/book/${loaded}`).then(data => {
+        axiosSecure.get(`/book/${loaded}`).then(data => {
             if (data?.data?._id === loaded) {
                 let f = failed;f.book = false;
                 setFailed(f);
@@ -62,7 +65,7 @@ const UpdateBook = () => {
             navigate("/error", { state: st });
         })
 
-        axios.get(`${import.meta.env.VITE_SERVER_URI}/categories`).then(data => { let f = failed;f.categories = false; setFailed(f); setCategories(data.data); }).catch(() => { setFailed(true); })
+        axiosSecure.get(`/categories`).then(data => { let f = failed;f.categories = false; setFailed(f); setCategories(data.data); }).catch(() => { setFailed(true); })
         document.title = "Update Book | Friendly BookWorm"
         const imageinput = document.getElementById('image-upload');
         imageinput.addEventListener("change", handleImageChange);
@@ -78,32 +81,14 @@ const UpdateBook = () => {
         data.quantity =  document.querySelector("#updateform #quantity").value
         data.rating = rating.toString()
         data.category = categories[parseInt(document.getElementById("currcategory2").value)].title
-        axios.patch(`${import.meta.env.VITE_SERVER_URI}/update/${book._id}`, data).then(data => {
+        axiosSecure.patch(`/update/${book._id}`, data).then(data => {
             if(data.data.acknowledged){
 
-                toast.success(<div className='p-4 py-5'>Book Updated Successfully<br /> <button onClick={handlegoback} className="px-2 py-1 bg-green-800 text-white rounded-md">Go Back</button></div>, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "colored",
-                })
+                toast.success(<div className='p-4 py-5'>Book Updated Successfully<br /> <button onClick={handlegoback} className="px-2 py-1 bg-green-800 text-white rounded-md">Go Back</button></div>,toastinfo)
             }
             
         }).catch((e) => {
-            toast.error(<div className='p-4 py-5'>{e.message}</div>, {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-            })
+            toast.error(<div className='p-4 py-5'>{e.message}</div>,toastinfo)
         })
     }
     const handleRatingChange = (value) => {

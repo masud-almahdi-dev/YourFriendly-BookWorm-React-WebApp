@@ -1,31 +1,32 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {useAuth} from "../../authentication/Authentication";
+import { useAuth } from "../../authentication/Authentication";
 import { ToastContainer, toast } from 'react-toastify';
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../authentication/useaxiossecure";
 
 const Login = () => {
     const { user, signIn, googleSignIn } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
+    const axiosSecure = useAxiosSecure()
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const toastinfo = { position: "bottom-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: false, progress: undefined, theme: "colored" }
 
     const handlelogin = data => {
+        const email = data.email
         signIn(data.email, data.password).then(
             result => {
-                navigate(location?.state ? location.state : "/");
+                //const loggedinuser = result.user
+                const udata = { email }
+                axiosSecure.post(`/jwt`, udata).then(res => {
+                    if (res.data.success) {
+                        navigate(location?.state ? location.state : "/");
+                    }
+                }).catch(e => console.log(e))
             }
         ).catch(error =>
-            toast.error(<div className='p-4 py-5'>{error.code === "auth/invalid-login-credentials" ? "Email or Password is invalid" : error.code}</div>, {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-            }))
+            toast.error(<div className='p-4 py-5'>{error.code === "auth/invalid-login-credentials" ? "Email or Password is invalid" : error.code}</div>, toastinfo))
     }
     const handlegooglelogin = e => {
         e.preventDefault();
@@ -48,7 +49,7 @@ const Login = () => {
             <div className="flex w-full lg:w-1/2 pt-6 lg:pt-0 justify-center items-center">
                 <img src="/login.png" className="w-[20vw] lg:w-[40vw]" alt="" />
             </div>
-            <form onSubmit={handleSubmit(handlelogin)}  className="w-full lg:w-[45%] md:px-40 lg:px-10 xl:px-32 bg-white h-full justify-center p-6 flex flex-col gap-8">
+            <form onSubmit={handleSubmit(handlelogin)} className="w-full lg:w-[45%] md:px-40 lg:px-10 xl:px-32 bg-white h-full justify-center p-6 flex flex-col gap-8">
                 <h1 className="text-4xl pb-6">Login</h1>
                 <div className="flex flex-col">
                     <label className="flex justify-between items-center mb-2">

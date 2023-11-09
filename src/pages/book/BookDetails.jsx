@@ -5,16 +5,19 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Rating from "react-rating";
 import { useAuth } from "../../authentication/Authentication";
+import useAxiosSecure from "../../authentication/useaxiossecure";
 
 const BookDetails = () => {
     const {user} = useAuth()
     const loaded = useLoaderData()
     const [failed, setFailed] = useState(true);
     const [book, setBook] = useState({});
+    const axiosSecure = useAxiosSecure()
     const { darkmode, setDarkMode } = useDarkMode();
     const navigate = useNavigate()
+    const toastinfo = { position: "bottom-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: false, progress: undefined, theme: "colored" }
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_SERVER_URI}/book/${loaded}`).then(data => {
+        axiosSecure.get(`/book/${loaded}`).then(data => {
             if (data?.data?._id === loaded) {
                 setFailed(false);
                 document.title = data.data.title + " | Friendly BookWorm"
@@ -30,42 +33,23 @@ const BookDetails = () => {
         })
     }, [])
     function handleborrow() {
-        const data = {user: user.email} 
-        axios.patch(`${import.meta.env.VITE_SERVER_URI}/borrow/${book._id}`,data).then(data => {
-            if (data.data?.code != undefined && data.data?.code === "40") {
-                toast.error(<div className='p-4 py-5'>You already borrowed one</div>, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "colored",
-                })
-            } else if (data.data?.code != undefined && data.data?.code === "50") {
-                toast.error(<div className='p-4 py-5'>No more copies available</div>, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "colored",
-                })
+        const data = {} 
+        axiosSecure.patch(`/borrow/${book._id}`,data).then(data => {
+            if (data.data?.code != undefined && data.data?.code === "50") {
+                toast.error(<div className='p-4 py-5'>{data.data?.message}</div>,toastinfo)
             } else if (data.data?.acknowledged != undefined) {
-                toast.success(<div className='p-4 py-5'>Book Borrowed Successfully</div>, {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "colored",
-                })
+                toast.success(<div className='p-4 py-5'>Book Borrowed Successfully</div>, toastinfo)
+            }
 
+        }).catch((e) => { console.log(e) })
+    }
+    function handlereturn() {
+        const data = {} 
+        axiosSecure.patch(`/return/${book._id}`,data).then(data => {
+            if (data.data?.code != undefined && data.data?.code === "50") {
+                toast.error(<div className='p-4 py-5'>{data.data?.message}</div>, toastinfo)
+            } else if (data.data?.acknowledged != undefined) {
+                toast.success(<div className='p-4 py-5'>Book Returned Successfully</div>, toastinfo)
             }
 
         }).catch((e) => { console.log(e) })
@@ -94,6 +78,7 @@ const BookDetails = () => {
                         </div>
                         <div className="flex flex-col lg:flex-row items-center justify-center p-4 gap-4">
                             <button className="bg-yellow-400 px-4 py-2 rounded-md hover:saturate-50 hover:brightness-75 text-black" onClick={handleborrow}>BORROW</button>
+                            <button className="bg-green-400 px-4 py-2 rounded-md hover:saturate-50 hover:brightness-75 text-black" onClick={handlereturn}>RETURN</button>
                             <button className="bg-red-400 px-4 py-2 rounded-md hover:saturate-50 hover:brightness-75 text-black" onClick={handleread}>READ</button>
                         </div>
                     </div>

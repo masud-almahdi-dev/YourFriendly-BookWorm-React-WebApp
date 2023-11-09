@@ -3,7 +3,6 @@ import Layout from "./Layout";
 import Home from "../pages/home/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import Cart from "../pages/cart/Cart";
 import PrivateRoute from "../pages/auth/PrivateRoute";
 import ErrorPage from "../pages/error/ErrorPage";
 import Category from "../pages/category/Category";
@@ -12,6 +11,7 @@ import AllBooks from "../pages/book/AllBooks";
 import UpdateBook from "../pages/book/UpdateBook";
 import AddBook from "../pages/book/AddBook";
 import ReadPage from "../pages/book/ReadPage";
+import BorrowedBooks from "../pages/cart/BorrowedBooks";
 
 const Routes = createBrowserRouter([
     {
@@ -37,11 +37,11 @@ const Routes = createBrowserRouter([
             },
             {
                 path: "/cart",
-                element: <PrivateRoute><Cart /></PrivateRoute>,
+                element: <PrivateRoute><BorrowedBooks /></PrivateRoute>,
             },
             {
                 path: "/books",
-                element: <PrivateRoute><AllBooks /></PrivateRoute>,
+                element: <AllBooks />
             },
             {
                 path: "/add",
@@ -49,7 +49,7 @@ const Routes = createBrowserRouter([
             },
             {
                 path: "/category/:id",
-                element: <PrivateRoute><Category /></PrivateRoute>,
+                element: <Category />,
                 loader: ({ params }) => params.id 
             },
             {

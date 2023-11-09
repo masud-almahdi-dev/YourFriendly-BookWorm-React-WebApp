@@ -3,41 +3,38 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../authentication/Authentication";
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from 'react-toastify';
-import axios from "axios";
+import useAxiosSecure from "../../authentication/useaxiossecure";
 const SignUp = () => {
 
     const { user, createUser, googleSignIn } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
+    const axiosSecure = useAxiosSecure()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [image, setImage] = useState(null);
+    const toastinfo = { position: "bottom-right", autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true, draggable: false, progress: undefined, theme: "colored" }
 
     function handleImageChange(event) {
         setImage(event.target.value)
     }
     const handleSignUp = async (data) => {
-
+        const email = data.email
         createUser(data.email, data.password).then(res => {
             
-            axios.post(`${import.meta.env.VITE_SERVER_URI}/usercreate`,data).then(data=>console.log(data.data)).catch(e=>console.log(e))
-            // if (location?.state) {
-            //     navigate(location.state);
-            // } else {
-            //     navigate("/login");
-            // }
+            axiosSecure.post(`/usercreate`,data).then(data=>{
+                
+                const udata = { email }
+                axiosSecure.post(`/jwt`, udata).then(res => {
+                    if (res.data.success) {
+                        navigate(location?.state ? location.state : "/");
+                    }
+                }).catch(e => console.log(e))
+                
+            }).catch(e=>console.log(e))
         }
         ).catch(error => {
 
-            toast.error(<div className='p-4 py-5'>{error.code === "auth/email-already-in-use" ? "E-mail already in use." : error.code}</div>, {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-            })
+            toast.error(<div className='p-4 py-5'>{error.code === "auth/email-already-in-use" ? "E-mail already in use." : error.code}</div>, toastinfo)
         })
     }
 
