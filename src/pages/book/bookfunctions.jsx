@@ -17,13 +17,7 @@ const Allbookitem = ({ arr }) => {
         navigate(`/book/${id}`);
     }
     const handleupdate = (id) => {
-        if(userrole === "librarian" ){
             navigate(`/update/${id}`);
-        }else if(userrole === "client"){
-            toast.error("You are not librarian",toastinfo)
-        }else{
-            navigate(`/update/${id}`);
-        }
     }
     useEffect(() => {
         if (user) {
