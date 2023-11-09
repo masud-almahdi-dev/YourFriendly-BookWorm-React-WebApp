@@ -19,16 +19,6 @@ const Allbookitem = ({ arr }) => {
     const handleupdate = (id) => {
             navigate(`/update/${id}`);
     }
-    useEffect(() => {
-        if (user) {
-            axiosSecure.get("/user").then(data => {
-                if (data?.data?.role) {
-                    setuserrole(data.data?.role);
-                } else { navigate("/error", { state: { errormessage: "Loading user data failed" } }); }
-            }).catch((e) => { console.log(e); setFailed(true); })
-        }
-    }, [user])
-            
 
     return (<>
         {user&&userrole===""? <h1 className="mx-auto text-center p-4 w-full rounded-lg my-4 bg-white text-black text-xl">Loading</h1>
