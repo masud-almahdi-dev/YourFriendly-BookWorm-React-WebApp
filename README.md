@@ -9,6 +9,10 @@ https://friendly-bookworm.web.app/
 ``librarian username/email:`` abcd@efgh.com <br/>
 ```librarian password: ABCD@1234```
 
+## Server-Repo:
+
+https://github.com/masud-almahdi-dev/YourFriendly-BookWorm-Server-WebApp
+
 
 # features
 
