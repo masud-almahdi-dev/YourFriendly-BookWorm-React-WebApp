@@ -1,12 +1,14 @@
 # Friendly BookWorm:
 
-Book lending and viewing site made with library management in mind.
+Book lending and viewing site made for library management, <br/> built using React, Tailwind, Firebase, JWT, MongoDB, Express
 
 ## live-link:
-librarian username: abcd@efgh.com
-librarian password: ABCD@1234
 
 https://friendly-bookworm.web.app/
+
+``librarian username/email:`` abcd@efgh.com <br/>
+```librarian password: ABCD@1234```
+
 
 # features
 
